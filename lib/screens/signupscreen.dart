@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:foodie/api/dataserver.dart';
 import 'package:foodie/screens/navbarscreen.dart';
-import 'package:foodie/widgets/button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -20,6 +22,11 @@ class _SignupScreenState extends State<SignupScreen> {
       _obscureText = !_obscureText;
     });
   }
+
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController number = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +65,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(25)),
               child: TextFormField(
+                controller: firstName,
                 decoration: InputDecoration(
-                    hintText: "Full Name",
+                    hintText: "First Name",
                     prefixIcon: Icon(Icons.person_outline),
-                    border: InputBorder.none),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(25)),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    hintText: "Your Email",
-                    prefixIcon: Icon(Icons.email),
                     border: InputBorder.none),
               ),
             ),
@@ -96,6 +85,47 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(25)),
               child: TextFormField(
+                controller: lastName,
+                decoration: InputDecoration(
+                    hintText: "Last Name",
+                    prefixIcon: Icon(Icons.person_outline),
+                    border: InputBorder.none),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(25)),
+              child: TextFormField(
+                controller: number,
+                decoration: InputDecoration(
+                    hintText: "Mobile No.",
+                    prefixIcon: Icon(Icons.phone_android),
+                    border: InputBorder.none),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(25)),
+              child: TextFormField(
+                controller: password,
                 obscureText: _obscureText,
                 validator: (val) =>
                     val.length < 6 ? 'Password too short.' : null,
@@ -119,8 +149,32 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: costumButton(context, "SIGNUP", NavBarScreen(),
-                double.infinity, Colors.orange, Colors.white, 50.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(25)),
+              height: 50,
+              width: double.infinity,
+              child: FlatButton(
+                  onPressed: () {
+                    var body = jsonEncode(<String, dynamic>{
+                      'firstName': firstName,
+                      'lastName': lastName,
+                      'number': number,
+                      'password': password
+                    });
+                    DataServer.register(body: body);
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return NavBarScreen();
+                    }));
+                  },
+                  child: Text(
+                    "SIGNUP",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  )),
+            ),
           ),
           SizedBox(
             height: 10,

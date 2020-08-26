@@ -16,14 +16,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: Drawer()),
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            leading: Icon(
-              Icons.menu,
-              color: Colors.orange,
-            ),
+            // leading: Icon(
+            //   Icons.menu,
+            //   color: Colors.orange,
+            // ),
             brightness: Brightness.light,
             backgroundColor: Colors.white,
             title: Text(

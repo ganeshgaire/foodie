@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       splashTile(
                           context,
                           "Daddy's Kitchen",
-                          "Welcome to Daddys Kitchen, Let's Order",
+                          "Welcome to Daddys Kitchen",
                           "assets/daddys.png"),
                       splashTile(
                           context,

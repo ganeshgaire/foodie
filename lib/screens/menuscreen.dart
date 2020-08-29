@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-import 'navbarscreen.dart';
+import 'package:foodie/api/dataserver.dart';
+import 'package:foodie/models/Category.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key key}) : super(key: key);
@@ -11,144 +11,49 @@ class MenuScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              return Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                return NavBarScreen();
-              }));
-            }),
-        title: Text("Menu"),
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+        title: Text("Daddy's Menu"),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 1,
       ),
-      body: ListView(
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(MdiIcons.pizza),
-              title: Text(
-                "Pizza",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-            ),
-          ),
-        ],
+      body: FutureBuilder(
+        future: DataServer.fetchCategories(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
+          if (snapshot.hasData) {
+            List<Category> categories = snapshot.data;
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: categories.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(categories[index].items.toString()),
+                      ),
+                      title: Text(categories[index].name),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                    ),
+                  );
+                });
+          } else {
+            return Shimmer.fromColors(
+                child: ListView.builder(
+                  itemCount: 8,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Card(
+                      child: ListTile(),
+                    );
+                  },
+                ),
+                baseColor: Colors.grey[200],
+                highlightColor: Colors.grey[300]);
+          }
+        },
       ),
     );
   }

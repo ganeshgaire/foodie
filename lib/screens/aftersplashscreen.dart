@@ -22,15 +22,23 @@ class _AfterSplashScreenState extends State<AfterSplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Spacer(),
-          Container(
-            child: Text(
-              "Daddy's Kitchen",
-              style: TextStyle(color: Colors.orange, fontSize: 30),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: Container(
+              child: Text(
+                "Daddy's Kitchen",
+                style: TextStyle(color: Colors.orange, fontSize: 25),
+              ),
             ),
           ),
-          Container(
-              height: 300, width: 300, child: Image.asset("assets/daddys.png")),
+          Expanded(
+            child: Container(
+                height: 150,
+                width: 150,
+                child: Image.asset("assets/daddys.png")),
+          ),
           Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

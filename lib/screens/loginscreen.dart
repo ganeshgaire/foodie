@@ -36,10 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
               fontSize: 20),
         ),
       ),
-      body: ListView(
+      body: Column(
         children: <Widget>[
           SizedBox(
-            height: 30,
+            height: 40,
           ),
           Container(
             height: 150,
@@ -98,13 +98,15 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "Forget password?",
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "Forget password?",
+                  ),
                 ),
               ),
             ),
@@ -112,52 +114,60 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: costumButton(context, "LOGIN", NavBarScreen(),
-                double.infinity, Colors.orange, Colors.white, 50.0),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: costumButton(context, "LOGIN", NavBarScreen(),
+                  double.infinity, Colors.orange, Colors.white, 50.0),
+            ),
           ),
           SizedBox(
             height: 10,
           ),
-          Container(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Don't have an Account ? Sign Up",
+          Expanded(
+            child: Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Don't have an Account ? Sign Up",
+                ),
               ),
             ),
           ),
           SizedBox(
             height: 10,
           ),
-          Container(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "OR",
-                style: TextStyle(color: Colors.blueGrey),
+          Expanded(
+            child: Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "OR",
+                  style: TextStyle(color: Colors.blueGrey),
+                ),
               ),
             ),
           ),
           SizedBox(
             height: 20,
           ),
-          Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 25,
-                  child: Icon(MdiIcons.facebook),
-                ),
-                SizedBox(width: 8),
-                CircleAvatar(
-                  radius: 25,
-                  child: Icon(MdiIcons.google),
-                ),
-              ],
+          Expanded(
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 25,
+                    child: Icon(MdiIcons.facebook),
+                  ),
+                  SizedBox(width: 8),
+                  CircleAvatar(
+                    radius: 25,
+                    child: Icon(MdiIcons.google),
+                  ),
+                ],
+              ),
             ),
           ),
           Spacer(),

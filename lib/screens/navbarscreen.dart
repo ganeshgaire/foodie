@@ -1,7 +1,7 @@
-import 'package:circle_bottom_navigation/circle_bottom_navigation.dart';
-import 'package:circle_bottom_navigation/widgets/tab_data.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/screens/homescreen.dart';
+import 'package:foodie/widgets/customtab.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'menuscreen.dart';
 import 'cartscreen.dart';
 import 'accountscreen.dart';
@@ -14,55 +14,36 @@ class NavBarScreen extends StatefulWidget {
 }
 
 class _NavBarScreenState extends State<NavBarScreen> {
-  int currentPage = 0;
-
   final List<Widget> _pages = [
     HomeScreen(),
     MenuScreen(),
     CartScreen(),
     AccountScreen(),
   ];
-
+  final List<IconData> _icons = const [
+    Icons.home,
+    Icons.restaurant_menu,
+    MdiIcons.cart,
+    MdiIcons.account,
+  ];
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[currentPage],
-      bottomNavigationBar: CircleBottomNavigation(
-        barHeight: 55,
-        circleSize: 45,
-        circleColor: Colors.orange[600],
-        initialSelection: currentPage,
-        inactiveIconColor: Colors.orange[600],
-        textColor: Colors.grey[500],
-        hasElevationShadows: true,
-        tabs: [
-          TabData(
-            icon: Icons.home,
-            iconSize: 20,
-            title: 'Home',
-            fontSize: 12,
+    return DefaultTabController(
+        length: _icons.length,
+        child: Scaffold(
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: _pages,
           ),
-          TabData(
-            icon: Icons.restaurant_menu,
-            iconSize: 20,
-            title: 'Menu',
-            fontSize: 12,
+          bottomNavigationBar: Card(
+            elevation: 0,
+            child: CustomTabBar(
+              icons: _icons,
+              selectedIndex: _selectedIndex,
+              onTap: (index) => setState(() => _selectedIndex = index),
+            ),
           ),
-          TabData(
-            icon: Icons.shopping_cart,
-            iconSize: 20,
-            title: 'Cart',
-            fontSize: 12,
-          ),
-          TabData(
-            icon: Icons.person,
-            iconSize: 20,
-            title: 'Account',
-            fontSize: 12,
-          ),
-        ],
-        onTabChangedListener: (index) => setState(() => currentPage = index),
-      ),
-    );
+        ));
   }
 }

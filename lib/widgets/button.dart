@@ -14,7 +14,7 @@ Widget costumButton(context, text, route, width, btnColor, textColor, height) {
         },
         child: Text(
           text,
-          style: TextStyle(color: textColor, fontSize: 20),
+          style: TextStyle(color: textColor, fontSize: 15),
         )),
   );
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodie/screens/navbarscreen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key key}) : super(key: key);
@@ -9,18 +8,12 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              return Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                return NavBarScreen();
-              }));
-            }),
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
         title: Text("My Account"),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 1,
       ),

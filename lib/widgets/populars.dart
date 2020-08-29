@@ -39,15 +39,13 @@ class PopularWidget extends StatelessWidget {
                                   color: Colors.orange),
                               child: Text(
                                 "Rs.${populars[index].price.toString()}",
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 14),
                               ),
                             )),
                         Positioned(
                           left: 10,
                           top: 0,
                           child: Image.network(populars[index].image),
-                          // height: 80,
-                          // width: 80,
                         ),
                         Positioned(
                             bottom: 14,
@@ -56,17 +54,25 @@ class PopularWidget extends StatelessWidget {
                               child: Text(
                                 populars[index].name,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w400),
+                                    fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             )),
                         Positioned(
                             bottom: 14,
                             right: 5,
                             child: Container(
-                                child: Icon(
-                              Icons.add_circle_outline,
+                                child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
                               color: Colors.orange,
-                              size: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Add",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ),
                             ))),
                       ],
                     )),

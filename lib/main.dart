@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/controller/cartcontroller.dart';
+import 'package:provider/provider.dart';
 import 'screens/splashscreen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => CartController(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

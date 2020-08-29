@@ -25,7 +25,7 @@ class ComboWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)),
                 child: Container(
                     height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.height * 0.35,
                     decoration: BoxDecoration(
                         color: Colors.pink[50],
                         borderRadius: BorderRadius.circular(20)),
@@ -38,7 +38,7 @@ class ComboWidget extends StatelessWidget {
                               child: Text(
                                 "${combos[index].validTill}",
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.deepOrange),
+                                    fontSize: 14, color: Colors.deepOrange),
                               ),
                             )),
                         Positioned(
@@ -51,7 +51,7 @@ class ComboWidget extends StatelessWidget {
                             child: Container(
                               child: Text(
                                 "Rs.${combos[index].price.toString()}",
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 14),
                               ),
                             )),
                         Positioned(
@@ -61,17 +61,25 @@ class ComboWidget extends StatelessWidget {
                               child: Text(
                                 combos[index].name,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w400),
+                                    fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             )),
                         Positioned(
                             bottom: 14,
                             right: 5,
                             child: Container(
-                                child: Icon(
-                              Icons.add_circle_outline,
+                                child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
                               color: Colors.orange,
-                              size: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Add",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              ),
                             ))),
                       ],
                     )),

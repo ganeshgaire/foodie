@@ -36,11 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     },
                     scrollDirection: Axis.horizontal,
                     children: [
-                      splashTile(
-                          context,
-                          "Daddy's Kitchen",
-                          "Welcome to Daddys Kitchen",
-                          "assets/daddys.png"),
+                      splashTile(context, "Daddy's Kitchen",
+                          "Welcome to Daddys Kitchen", "assets/daddys.png"),
                       splashTile(
                           context,
                           "Daddy's Kitchen",
@@ -93,7 +90,7 @@ Widget splashTile(context, name, title, img) {
               name,
               style: TextStyle(
                   color: Colors.orange[400],
-                  fontSize: 30,
+                  fontSize: 25,
                   fontWeight: FontWeight.w800),
             )),
         SizedBox(
@@ -105,7 +102,7 @@ Widget splashTile(context, name, title, img) {
                 margin: EdgeInsets.only(top: 10),
                 child: Text(
                   title,
-                  style: TextStyle(color: Colors.grey[400], fontSize: 18),
+                  style: TextStyle(color: Colors.grey[400], fontSize: 15),
                 ))),
         Align(
             alignment: Alignment.topCenter,

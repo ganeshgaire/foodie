@@ -1,19 +1,45 @@
 import 'dart:convert';
 import 'package:foodie/models/models.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:async';
 import 'package:foodie/api/serverapi.dart';
 
 class DataServer {
-  static Future<http.Response> register({body}) {
-    return http.post(
-      ServerApi.registerApi,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-  }
+static Future<void> register({var body}) async {
+  print(ServerApi.registerApi);
+  const Map<String, String> header = {
+  'Content-type': 'application/json',
+  'Accept': 'application/json',
+};
+  return http.post(ServerApi.registerApi, body: body,headers: header).then((http.Response response) {
+    print(response.body);
+    final int statusCode = response.statusCode;
+
+    if (statusCode == 200) {
+           
+    } else {
+            throw new Exception("Error while fetching data");
+    }
+  });
+}
+
+static Future<void> verifyOtp({var body}) async {
+  print(ServerApi.verifyOtp);
+  const Map<String, String> header = {
+  'Content-type': 'application/json',
+  'Accept': 'application/json',
+};
+  return http.post(ServerApi.verifyOtp, body:body,headers: header).then((http.Response response) {
+    print(response.body);
+    final int statusCode = response.statusCode;
+
+    if (statusCode == 200) {
+           print("success ${response.body}");
+    } else {
+            throw new Exception("Error while fetching data");
+    }
+  });
+}
 
   static Future<List<Category>> fetchCategories() async {
     var res = await http.get(ServerApi.categoriesApi);

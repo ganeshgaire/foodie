@@ -48,8 +48,8 @@ class DealsWidget extends StatelessWidget {
                                 ),
                               )),
                           Positioned(
-                            left: 30,
-                            top: 5,
+                            left: 25,
+                            top: -15,
                             child: Hero(
                                 tag: deals[index].name,
                                 child: GestureDetector(
@@ -62,7 +62,8 @@ class DealsWidget extends StatelessWidget {
                                     },
                                     child: Image.network(
                                       deals[index].image,
-                                      height: 150,
+                                      height: 180,
+                                      width: 140,
                                     ))),
                           ),
                           Positioned(
@@ -85,36 +86,28 @@ class DealsWidget extends StatelessWidget {
                                       fontWeight: FontWeight.w400),
                                 ),
                               )),
-                          Positioned(
-                              bottom: 14,
-                              right: 5,
-                              child: Container(
-                                  child: InkWell(
-                                onTap: () {
-                                  cart.addItem(
-                                      deals[index].id.toString(),
-                                      deals[index].name,
-                                      deals[index].price,
-                                      deals[index].image);
-
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                      content:
-                                          Text('Item added successfully')));
-                                },
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  color: Colors.orange,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      "Add",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
-                                  ),
-                                ),
-                              ))),
+                          // Positioned(
+                          //     bottom: 14,
+                          //     right: 5,
+                          //     child: Container(
+                          //         child: InkWell(
+                          //       onTap: () {
+                                 
+                          //       },
+                          //       child: Card(
+                          //         shape: RoundedRectangleBorder(
+                          //             borderRadius: BorderRadius.circular(10)),
+                          //         color: Colors.orange,
+                          //         child: Padding(
+                          //           padding: const EdgeInsets.all(4.0),
+                          //           child: Text(
+                          //             "Add",
+                          //             style: TextStyle(
+                          //                 color: Colors.white, fontSize: 15),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ))),
                         ],
                       )),
                 ),

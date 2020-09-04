@@ -68,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     "Welcome Sushil ! \nWhat do you want to eat?",
                     style: TextStyle(
-                        color: Colors.grey[600],
+                        color: Colors.grey[500],
                         fontSize: 16.0,
-                        fontWeight: FontWeight.w300),
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  "Today\'s Deals",
+                  "Popular Today",
                   style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18,
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  "Popular Items",
+                  "Burger Items",
                   style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18,

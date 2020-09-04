@@ -34,7 +34,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       child: Text(
                         categories[index].name,
                         style: TextStyle(
-                            fontSize: 14, color: Colors.deepOrange[800]),
+                            fontSize: 14, color: Colors.deepOrange),
                       ),
                     ),
                   );

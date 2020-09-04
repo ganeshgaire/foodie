@@ -20,7 +20,7 @@ class CartScreen extends StatelessWidget {
           centerTitle: true,
           elevation: 1,
         ),
-        body: Column(
+        body: cart.items.length > 0 ? Column(
           children: <Widget>[
             Expanded(
               child: ListView.builder(
@@ -40,20 +40,56 @@ class CartScreen extends StatelessWidget {
                   child: Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        child: FittedBox(child: Text('S')),
+                        child: FittedBox(
+                            child: Text(cart.items.values.toList()[i].name[0])),
                       ),
                       title: Text(cart.items.values.toList()[i].name),
                       subtitle: Text(
-                          'Total: \$${(cart.items.values.toList()[i].price * cart.items.values.toList()[i].quantity)}'),
-                      trailing:
-                          Text('${cart.items.values.toList()[i].quantity} x'),
+                        'Total : ${cart.items.values.toList()[i].quantity} x ${cart.items.values.toList()[i].price} = Rs.${(cart.items.values.toList()[i].price * cart.items.values.toList()[i].quantity)}',
+                        style: TextStyle(fontSize: 11),
+                      ),
+                      trailing: Container(
+                        height: 30,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.orange[50]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.remove_circle_outline),
+                                  color: Colors.deepOrange,
+                                  iconSize: 20,
+                                ),
+                              ),
+                            ),
+                            Text("${cart.items.values.toList()[i].quantity}"),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.add_circle_outline),
+                                  color: Colors.deepOrange,
+                                  iconSize: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             )
           ],
-        ),
+        ) : Center(child:Text("Aren't you hungry ?\nAdd some food to cart."))
       );
     });
   }

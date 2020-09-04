@@ -18,9 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(children: <Widget>[
+          Spacer(),
           Expanded(
             flex: 4,
-            child: Column(
+            child: ListView(
               children: [
                 Spacer(),
                 AnimatedContainer(

@@ -20,7 +20,7 @@ class CustomTabBar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: Colors.orange,
-            width: 3.0,
+            width: 2.0,
           ),
         ),
       ),
@@ -31,8 +31,10 @@ class CustomTabBar extends StatelessWidget {
                 Tab(
                   icon: Icon(
                     e,
+                    
                     color: i == selectedIndex ? Colors.orange : Colors.black45,
-                    size: 30.0,
+
+                    size: 20.0,
                   ),
                 ),
               ))

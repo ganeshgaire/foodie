@@ -32,10 +32,10 @@ class CartPdt extends StatelessWidget {
         child: Card(
           child: ListTile(
             leading: CircleAvatar(
-              child: FittedBox(child: Text('\$$price')),
+              child: FittedBox(child: Text('Rs.$price')),
             ),
             title: Text(name),
-            subtitle: Text('Total: \$${(price * quantity)}'),
+            subtitle: Text('Total:Rs.${(price * quantity)}'),
             trailing: Text('$quantity x'),
           ),
         ),

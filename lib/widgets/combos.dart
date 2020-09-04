@@ -44,7 +44,7 @@ class ComboWidget extends StatelessWidget {
                         Positioned(
                             left: 25,
                             top: 0,
-                            child: Image.network(combos[index].image)),
+                            child: Image.network(combos[index].image),height: 180,width: 180,),
                         Positioned(
                             right: 4,
                             top: 3,
@@ -64,23 +64,23 @@ class ComboWidget extends StatelessWidget {
                                     fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             )),
-                        Positioned(
-                            bottom: 14,
-                            right: 5,
-                            child: Container(
-                                child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Colors.orange,
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                  "Add",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ),
-                            ))),
+                        // Positioned(
+                        //     bottom: 14,
+                        //     right: 5,
+                        //     child: Container(
+                        //         child: Card(
+                        //       shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(10)),
+                        //       color: Colors.orange,
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.all(4.0),
+                        //         child: Text(
+                        //           "Add",
+                        //           style: TextStyle(
+                        //               color: Colors.white, fontSize: 15),
+                        //         ),
+                        //       ),
+                        //     ))),
                       ],
                     )),
               ),

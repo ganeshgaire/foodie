@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodie/screens/aftersplashscreen.dart';
+import 'package:foodie/screens/loginscreen.dart';
 import 'package:foodie/widgets/button.dart';
+import 'package:foodie/config/config.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -17,64 +18,42 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(children: <Widget>[
-          Spacer(),
-          Expanded(
-            flex: 4,
-            child: ListView(
+        child: ListView(children: <Widget>[
+          SizedBox(height: 50),
+          AnimatedContainer(
+            duration: Duration(seconds: 1),
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: PageView(
+              physics: PageScrollPhysics(),
+              pageSnapping: false,
+              onPageChanged: (value) {
+                setState(() {
+                  currentPage = value;
+                });
+              },
+              scrollDirection: Axis.horizontal,
               children: [
-                Spacer(),
-                AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: PageView(
-                    physics: PageScrollPhysics(),
-                    pageSnapping: false,
-                    onPageChanged: (value) {
-                      setState(() {
-                        currentPage = value;
-                      });
-                    },
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      splashTile(context, "Daddy's Kitchen",
-                          "Welcome to Daddys Kitchen", "assets/daddys.png"),
-                      splashTile(
-                          context,
-                          "Daddy's Kitchen",
-                          "Stay home, stay safe, enjoy food",
-                          "assets/daddys.png"),
-                    ],
-                  ),
-                ),
+                splashTile(context, "Daddy's Kitchen",
+                    "Welcome to Daddys Kitchen", "assets/daddys.png"),
+                splashTile(context, "Daddy's Kitchen",
+                    "Stay home, stay safe, enjoy food", "assets/daddys.png"),
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(2, (index) => dots(index: index)),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: costumButton(
-                      context,
-                      "Get Started",
-                      AfterSplashScreen(),
-                      double.infinity,
-                      Colors.orange,
-                      Colors.white70,
-                      50.0),
-                ),
-              ],
+          Container(
+            height: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(2, (index) => dots(index: index)),
             ),
           ),
-          Spacer(),
+          SizedBox(height: 50,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: costumButton(context, "Get Started", LoginScreen(),
+                double.infinity, Color(0xFFBF1C2E), Colors.white, 50.0),
+          ),
+          SizedBox(height: 30),
         ]),
       ),
     );
@@ -90,32 +69,26 @@ Widget splashTile(context, name, title, img) {
             child: Text(
               name,
               style: TextStyle(
-                  color: Colors.orange[400],
+                  color: mainColor,
                   fontSize: 25,
                   fontWeight: FontWeight.w800),
             )),
-        SizedBox(
-          height: 10,
-        ),
+            SizedBox(height:10),
         Align(
             alignment: Alignment.topCenter,
             child: Container(
-                margin: EdgeInsets.only(top: 10),
                 child: Text(
                   title,
-                  style: TextStyle(color: Colors.grey[400], fontSize: 15),
+                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
                 ))),
+                SizedBox(height:30),
         Align(
             alignment: Alignment.topCenter,
             child: Container(
-              height: MediaQuery.of(context).size.width * 0.5,
-              margin: EdgeInsets.only(
-                top: 30,
-                left: 30,
-                right: 30,
-              ),
               child: Image.asset(
                 img,
+                height: 200,
+                width: 250,
               ),
             )),
       ],
@@ -130,7 +103,7 @@ AnimatedContainer dots({int index}) {
     height: 6,
     width: currentPage == index ? 20 : 6,
     decoration: BoxDecoration(
-        color: currentPage == index ? Colors.orange : Colors.grey[400],
+        color: currentPage == index ? mainColor : Colors.grey[400],
         borderRadius: BorderRadius.circular(3)),
   );
 }

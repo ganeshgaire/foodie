@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/api/dataserver.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/models/models.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,7 +15,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
+      height: 50,
       child: FutureBuilder(
         future: DataServer.fetchCategories(),
         builder:
@@ -34,7 +35,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       child: Text(
                         categories[index].name,
                         style: TextStyle(
-                            fontSize: 14, color: Colors.deepOrange),
+                            fontSize: 14, color: mainColor),
                       ),
                     ),
                   );

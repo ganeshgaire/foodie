@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/controller/cartcontroller.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,7 @@ class CartScreen extends StatelessWidget {
                         width: 90,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Colors.orange[50]),
+                            color: Colors.red[50]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -63,7 +64,7 @@ class CartScreen extends StatelessWidget {
                                 child: IconButton(
                                   onPressed: () {},
                                   icon: Icon(Icons.remove_circle_outline),
-                                  color: Colors.deepOrange,
+                                  color: mainColor,
                                   iconSize: 20,
                                 ),
                               ),
@@ -75,7 +76,7 @@ class CartScreen extends StatelessWidget {
                                 child: IconButton(
                                   onPressed: () {},
                                   icon: Icon(Icons.add_circle_outline),
-                                  color: Colors.deepOrange,
+                                  color: mainColor,
                                   iconSize: 20,
                                 ),
                               ),
@@ -89,7 +90,7 @@ class CartScreen extends StatelessWidget {
               ),
             )
           ],
-        ) : Center(child:Text("Aren't you hungry ?\nAdd some food to cart."))
+        ) : Center(child:Text("Aren't you hungry ?\nadd some food to cart.",style: TextStyle(fontSize:14,color:Colors.grey[500]),))
       );
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
 
 class CustomTabBar extends StatelessWidget {
   final List<IconData> icons;
@@ -19,7 +20,7 @@ class CustomTabBar extends StatelessWidget {
       indicator: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Colors.orange,
+            color: mainColor,
             width: 2.0,
           ),
         ),
@@ -32,7 +33,7 @@ class CustomTabBar extends StatelessWidget {
                   icon: Icon(
                     e,
                     
-                    color: i == selectedIndex ? Colors.orange : Colors.black45,
+                    color: i == selectedIndex ? mainColor : Colors.black45,
 
                     size: 20.0,
                   ),

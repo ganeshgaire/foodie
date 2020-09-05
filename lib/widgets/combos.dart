@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/models/models.dart';
 
 class ComboWidget extends StatelessWidget {
@@ -38,7 +39,7 @@ class ComboWidget extends StatelessWidget {
                               child: Text(
                                 "${combos[index].validTill}",
                                 style: TextStyle(
-                                    fontSize: 14, color: Colors.deepOrange),
+                                    fontSize: 14, color:mainColor),
                               ),
                             )),
                         Positioned(
@@ -64,23 +65,6 @@ class ComboWidget extends StatelessWidget {
                                     fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             )),
-                        // Positioned(
-                        //     bottom: 14,
-                        //     right: 5,
-                        //     child: Container(
-                        //         child: Card(
-                        //       shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.circular(10)),
-                        //       color: Colors.orange,
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.all(4.0),
-                        //         child: Text(
-                        //           "Add",
-                        //           style: TextStyle(
-                        //               color: Colors.white, fontSize: 15),
-                        //         ),
-                        //       ),
-                        //     ))),
                       ],
                     )),
               ),

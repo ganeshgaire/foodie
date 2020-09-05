@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/controller/cartcontroller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ return  Scaffold(
                 size: 18,
               )),
               actions: [
-                Icon(MdiIcons.bagPersonalOutline,color: Colors.orange,),
+                Icon(MdiIcons.bagPersonalOutline,color:mainColor,),
                 SizedBox(width:5),
               ],
           elevation: 1,
@@ -89,7 +90,7 @@ return  Scaffold(
                     width: 120,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.orange[50]),
+                        color: Colors.red[50]),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -97,7 +98,7 @@ return  Scaffold(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Icon(
                             Icons.remove_circle_outline,
-                            color: Colors.deepOrange,
+                            color: mainColor,
                           ),
                         ),
                         Text("1"),
@@ -105,7 +106,7 @@ return  Scaffold(
                           padding: const EdgeInsets.only(right: 5.0),
                           child: Icon(
                             Icons.add_circle_outline,
-                            color: Colors.deepOrange,
+                            color: mainColor,
                           ),
                         ),
                       ],
@@ -146,7 +147,7 @@ return  Scaffold(
                   width: double.infinity,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      color: Colors.orange),
+                      color: mainColor),
                   child: FlatButton(onPressed: () {
           
                                 cart.addItem(

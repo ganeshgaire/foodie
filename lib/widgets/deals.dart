@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/controller/cartcontroller.dart';
 import 'package:foodie/models/models.dart';
 import 'package:foodie/screens/dealsinglescreen.dart';
@@ -31,20 +32,19 @@ class DealsWidget extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.25,
                       width: MediaQuery.of(context).size.height * 0.3,
                       decoration: BoxDecoration(
-                          color: Colors.orange[50],
                           borderRadius: BorderRadius.circular(20)),
                       child: Stack(
                         children: <Widget>[
                           Positioned(
                               top: 5,
-                              left: 5,
+                              left: 8,
                               child: Container(
                                 decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
-                                    color: Colors.orange),
+                                    color: mainColor),
                                 child: Text(
                                   "${deals[index].discount.toString()} %",
-                                  style: TextStyle(fontSize: 13),
+                                  style: TextStyle(fontSize: 13,color: Colors.white),
                                 ),
                               )),
                           Positioned(
@@ -86,28 +86,6 @@ class DealsWidget extends StatelessWidget {
                                       fontWeight: FontWeight.w400),
                                 ),
                               )),
-                          // Positioned(
-                          //     bottom: 14,
-                          //     right: 5,
-                          //     child: Container(
-                          //         child: InkWell(
-                          //       onTap: () {
-                                 
-                          //       },
-                          //       child: Card(
-                          //         shape: RoundedRectangleBorder(
-                          //             borderRadius: BorderRadius.circular(10)),
-                          //         color: Colors.orange,
-                          //         child: Padding(
-                          //           padding: const EdgeInsets.all(4.0),
-                          //           child: Text(
-                          //             "Add",
-                          //             style: TextStyle(
-                          //                 color: Colors.white, fontSize: 15),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ))),
                         ],
                       )),
                 ),

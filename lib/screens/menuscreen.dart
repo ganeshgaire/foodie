@@ -16,8 +16,8 @@ class MenuScreen extends StatelessWidget {
           color: Colors.white,
         ),
         title: Text("Daddy's Menu"),
-        centerTitle: true,
         backgroundColor: Colors.white,
+        centerTitle: true,
         elevation: 1,
       ),
       body: FutureBuilder(

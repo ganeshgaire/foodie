@@ -1,9 +1,10 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:foodie/api/dataserver.dart';
+import 'package:foodie/api/serverapi.dart';
+import 'package:foodie/config/config.dart';
+import 'package:foodie/screens/loginscreen.dart';
 import 'package:foodie/screens/otpscreen.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key key}) : super(key: key);
@@ -13,6 +14,11 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
+    final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final _formKey = GlobalKey<FormState>();
+
+
   // Initially password is obscure
   bool _obscureText = true;
 
@@ -28,9 +34,40 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
 
+// register
+Future<void> _register({var body}) async{
+  const Map<String, String> header = {
+  'Content-type': 'application/json',
+  'Accept': 'application/json',
+};
+  var response = await http.post(ServerApi.registerApi, body: body,headers: header);
+    print(response.body);
+    if(response.statusCode == 422){
+           final snackBar = SnackBar(
+            duration: const Duration(milliseconds: 500),
+            backgroundColor: Colors.black87,
+            content: Text('Mobile no. already exist. Please Login'),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+    } 
+    if(response.statusCode == 200) {
+        final snackBar = SnackBar(
+            duration: const Duration(milliseconds: 1000),
+            backgroundColor: Colors.black87,
+            content: Text('Signup Success'),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+
+            return OtpScreen();
+        }));
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -43,203 +80,199 @@ class _SignupScreenState extends State<SignupScreen> {
               fontSize: 20),
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Container(
-              height: 120,
-              width: 200,
-              child: Image.asset("assets/daddys.png"),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25)),
-                child: TextFormField(
-                  controller: firstName,
-                  decoration: InputDecoration(
-                      hintText: "First Name",
-                      prefixIcon: Icon(Icons.person_outline),
-                      border: InputBorder.none),
+      body: Form(
+        key: _formKey,
+              child: SafeArea(
+                child: ListView(
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 150,
+                width: 200,
+                child: Image.asset("assets/daddys.png"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(25)),
+                  child: TextFormField(
+                    controller: firstName,
+                     validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter first name';
+                        }
+                        return null;
+                      },
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                        hintText: "First Name",
+                        prefixIcon: Icon(Icons.person_outline),
+                        border: InputBorder.none),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25)),
-                child: TextFormField(
-                  controller: lastName,
-                  decoration: InputDecoration(
-                      hintText: "Last Name",
-                      prefixIcon: Icon(Icons.person_outline),
-                      border: InputBorder.none),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(25)),
+                  child: TextFormField(
+                    controller: lastName,
+                     validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter last name';
+                    }
+                    return null;
+                  },
+                         textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                        hintText: "Last Name",
+                        prefixIcon: Icon(Icons.person_outline),
+                        border: InputBorder.none),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25)),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: number,
-                  decoration: InputDecoration(
-                      hintText: "Mobile No.",
-                      prefixIcon: Icon(Icons.phone_android),
-                      border: InputBorder.none),
-                ),
+              SizedBox(
+                height: 10,
               ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25)),
-                child: TextFormField(
-                  controller: password,
-                  obscureText: _obscureText,
-                  validator: (val) =>
-                      val.length < 6 ? 'Password too short.' : null,
-                  decoration: InputDecoration(
-                      hintText: "Your Password",
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          return _toggle();
-                        },
-                        icon: Icon(_obscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                      ),
-                      border: InputBorder.none),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(25)),
-                height: 50,
-                width: double.infinity,
-                child: FlatButton(
-                    onPressed: () async{
-                      var body = jsonEncode(<String, dynamic>{
-                        'first_name': firstName.text,
-                        'last_name': lastName.text,
-                        'mobile_no': number.text,
-                        'password': password.text
-                      });
-                     await DataServer.register(body: body);
-                      
-                    await Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return OtpScreen();
-                            }));
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(25)),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                     validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter mobile no.';
+                      } else if(value.length < 10 || value.length > 12){
+                        return 'Enter valid mobile no.';
+                      }
+                      return null;
                     },
+                         textInputAction: TextInputAction.done,
+                    controller: number,
+                    decoration: InputDecoration(
+                        hintText: "Mobile No.",
+                        prefixIcon: Icon(Icons.phone_android),
+                        border: InputBorder.none),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(25)),
+                  child: TextFormField(
+                    controller: password,
+                         textInputAction: TextInputAction.done,
+
+                    obscureText: _obscureText,
+                     validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if(value.length < 6){
+                          return 'Password too short.';
+                        }
+                        return null;
+                      },
+                    decoration: InputDecoration(
+                        hintText: "Your Password",
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            return _toggle();
+                          },
+                          icon: Icon(_obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                        ),
+                        border: InputBorder.none),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: mainColor, borderRadius: BorderRadius.circular(25)),
+                  height: 50,
+                  width: double.infinity,
+                  child: FlatButton(
+                      onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+
+                           final snackBar = SnackBar(
+              duration: const Duration(milliseconds: 1000),
+              backgroundColor: Colors.black87,
+              content: Text('Loading...!'),
+              );
+              _scaffoldKey.currentState.showSnackBar(snackBar);
+
+                        var body = jsonEncode(<String, dynamic>{
+                          'first_name': firstName.text,
+                          'last_name': lastName.text,
+                          'mobile_no': number.text,
+                          'password': password.text
+                        });
+                        await _register(body: body);
+                            }
+                      },
+                      child: Text(
+                        "SIGNUP",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return LoginScreen();
+                  }));
+                },
+                child: Container(
+                  child: Align(
+                    alignment: Alignment.center,
                     child: Text(
-                      "SIGNUP",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Container(
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Already have an Account? Sign In",
+                      "Already have an Account? Sign In",
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-                      child: Container(
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "OR",
-                  style: TextStyle(color: Colors.blueGrey),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-                      child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 25,
-                    child: Icon(MdiIcons.facebook,color: Colors.blue,),
-                  ),
-                  SizedBox(width: 8),
-                  CircleAvatar(
-                    radius: 25,
-                    child: Icon(MdiIcons.google,color: Colors.red,),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Spacer(),
-        ],
+        ),
       ),
     );
   }

@@ -9,7 +9,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="foodie"
+        android:label="Daddys Kitchen"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

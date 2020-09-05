@@ -1,8 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:foodie/api/dataserver.dart';
+import 'package:foodie/api/serverapi.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/screens/navbarscreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key key}) : super(key: key);
@@ -13,6 +15,42 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+// verify token
+  Future<void> _verifyOtp({var body}) async {
+    const Map<String, String> header = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+    var response =
+        await http.post(ServerApi.verifyOtp, body: body, headers: header);
+    var responseData = json.decode(response.body);
+    if (response.statusCode == 422) {
+      final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Otp doesnot match.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (response.statusCode == 200) {
+      final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Otp Verified.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', responseData['api_token']);
+      localStorage.setString(
+          'user_data', json.encode(responseData['customer_info']));
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return NavBarScreen();
+      }));
+    }
+  }
 
   TextEditingController otp = TextEditingController();
   @override
@@ -39,7 +77,7 @@ class _OtpScreenState extends State<OtpScreen> {
               child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                      "Please enter 4 digit code\nwhich is sent to your mobile number."))),
+                      "Please enter 6 digit code\nwhich is sent to your mobile number."))),
           SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -66,14 +104,13 @@ class _OtpScreenState extends State<OtpScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(25)),
+                  color: mainColor, borderRadius: BorderRadius.circular(25)),
               height: 50,
               width: double.infinity,
               child: FlatButton(
                   onPressed: () async {
-                      final snackBar = SnackBar(
-                      duration: const Duration(milliseconds: 500),
+                    final snackBar = SnackBar(
+                      duration: const Duration(milliseconds: 1000),
                       backgroundColor: Colors.black87,
                       content: Text('Verifying...'),
                     );
@@ -83,12 +120,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     var body = jsonEncode(<String, dynamic>{
                       'otp': otp.text,
                     });
-                    await DataServer.verifyOtp(body: body);
-                  
-                    await Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return NavBarScreen();
-                    }));
+                    await _verifyOtp(body: body);
                   },
                   child: Text(
                     "VERIFY",

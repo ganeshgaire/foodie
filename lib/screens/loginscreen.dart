@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:foodie/api/serverapi.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/screens/navbarscreen.dart';
+import 'package:foodie/screens/signupscreen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -14,7 +18,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController number = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   // Initially password is obscure
   bool _obscureText = true;
@@ -29,19 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
 // fb login
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
-  Future<Null> login() async {
+  Future<Null> fbLogin() async {
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-          final snackBar = SnackBar(
-            duration: const Duration(milliseconds: 500),
-            backgroundColor: Colors.black87,
-            content: Text('Loading...'),
-            );
-            
-            _scaffoldKey.currentState.showSnackBar(snackBar);
-       
         final FacebookAccessToken accessToken = result.accessToken;
         final graphResponse = await http.get(
             'https://graph.facebook.com/v8.0/me?fields=name,first_name,last_name,picture,email&access_token=${accessToken.token}');
@@ -56,12 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
         //  Expires: ${accessToken.expires}
         //  Permissions: ${accessToken.permissions}
         //  Declined permissions: ${accessToken.declinedPermissions}
-        //  ''');  
-        
-          await Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return NavBarScreen();
-          }));
-        
+        //  ''');
+
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return NavBarScreen();
+        }));
+
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
@@ -73,10 +73,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         break;
       case FacebookLoginStatus.error:
-        Scaffold.of(context).showSnackBar(SnackBar(
-            duration: const Duration(milliseconds: 3000),
+        final snackBar = SnackBar(
+            duration: const Duration(milliseconds: 500),
             backgroundColor: Colors.black87,
-            content: Text('Something went wrong with the login process.')));
+            content: Text('Something went wrong with the login process.'));
+        _scaffoldKey.currentState.showSnackBar(snackBar);
         print('Something went wrong with the login process.\n'
             'Here\'s the error Facebook gave us: ${result.errorMessage}');
         break;
@@ -84,19 +85,64 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 // google login
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: [
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-);
-Future<void> _handleSignIn() async {
-  try {
-    await _googleSignIn.signIn();
-  } catch (error) {
-    print(error);
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
   }
-}
+
+// custom login
+// login
+  Future<void> _login({var body}) async {
+    const Map<String, String> header = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+    var response =
+        await http.post(ServerApi.customerLogin, body: body, headers: header);
+    var responseData = json.decode(response.body);
+    if (response.statusCode == 422) {
+      final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Please enter mobile no. and password'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (response.statusCode == 401) {
+      final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Credentials doesnot match.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (response.statusCode == 200) {
+      final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Login Success.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', responseData['api_token']);
+      localStorage.setString(
+          'user_data', json.encode(responseData['customer_info']));
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return NavBarScreen();
+      }));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,70 +160,88 @@ Future<void> _handleSignIn() async {
               fontSize: 20),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 40,
-          ),
-          Container(
-            height: 150,
-            width: 200,
-            child: Image.asset("assets/daddys.png"),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(25)),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    hintText: "Your Email",
-                    prefixIcon: Icon(Icons.email),
-                    border: InputBorder.none),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 150,
+              width: 200,
+              child: Image.asset("assets/daddys.png"),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25)),
+                child: TextFormField(
+                  controller: number,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter mobile no.';
+                    } else if (value.length < 10 || value.length > 12) {
+                      return 'Please enter valid no.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Your Mobile No.",
+                      prefixIcon: Icon(Icons.call),
+                      border: InputBorder.none),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(25)),
-              child: TextFormField(
-                obscureText: _obscureText,
-                validator: (val) =>
-                    val.length < 6 ? 'Password too short.' : null,
-                decoration: InputDecoration(
-                    hintText: "Your Password",
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        return _toggle();
-                      },
-                      icon: Icon(_obscureText
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    ),
-                    border: InputBorder.none),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25)),
+                child: TextFormField(
+                  controller: password,
+                  obscureText: _obscureText,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter password';
+                    } else if (value.length < 6) {
+                      return 'Password too short';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Your Password",
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          return _toggle();
+                        },
+                        icon: Icon(_obscureText
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      ),
+                      border: InputBorder.none),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Padding(
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 child: Align(
@@ -188,48 +252,62 @@ Future<void> _handleSignIn() async {
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(25)),
-              height: 50,
-              width: double.infinity,
-              child: FlatButton(
-                  onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    //   return NavBarScreen();
-                    // }));
-                  },
-                  child: Text(
-                    "LOGIN",
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  )),
+            SizedBox(
+              height: 10,
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Container(
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Don't have an Account ? Sign Up",
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: mainColor, borderRadius: BorderRadius.circular(25)),
+                height: 50,
+                width: double.infinity,
+                child: FlatButton(
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        final snackBar = SnackBar(
+                          duration: const Duration(milliseconds: 1000),
+                          backgroundColor: Colors.black87,
+                          content: Text('Loging...'),
+                        );
+
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
+
+                        var body = jsonEncode(<String, dynamic>{
+                          'username': number.text,
+                          'password': password.text
+                        });
+                        await _login(body: body);
+                      }
+                    },
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    )),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SignupScreen();
+                }));
+              },
+              child: Container(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Don't have an Account ? Sign Up",
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Container(
+            SizedBox(
+              height: 15,
+            ),
+            Container(
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -238,41 +316,53 @@ Future<void> _handleSignIn() async {
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      login();
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Icon(MdiIcons.facebook,color: Colors.blue,),
+            SizedBox(
+              height: 20,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 60,
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          fbLogin();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red[50],
+                          child: Icon(
+                            MdiIcons.facebook,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  InkWell(
-                    onTap: (){
-                 _handleSignIn();
-                    },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                      child: Icon(MdiIcons.google,color: Colors.red,),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _handleSignIn();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red[50],
+                          child: Icon(
+                            MdiIcons.google,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Spacer(),
-        ],
+            SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

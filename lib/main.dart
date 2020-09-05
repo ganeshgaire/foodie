@@ -14,9 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Foodie",
+      title: "Daddys Kitchen",
       theme: ThemeData(
-          primarySwatch: Colors.orange, backgroundColor: Colors.white),
+        iconTheme: IconThemeData(
+    color: Colors.black, //change your color here
+  ),
+          primarySwatch: Colors.orange
+          ),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );

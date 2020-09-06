@@ -46,22 +46,21 @@ class _LoginScreenState extends State<LoginScreen> {
         final graphResponse = await http.get(
             'https://graph.facebook.com/v8.0/me?fields=name,first_name,last_name,picture,email&access_token=${accessToken.token}');
         final profile = json.decode(graphResponse.body);
-        print("profile is $profile");
 
-        // print('''
-        //  Logged in!
+          var body = jsonEncode(<String, dynamic>{
+                          'first_name': profile['first_name'],
+                          'last_name': profile['last_name'],
+                          'email': profile['email'],
+                          'profile_image': profile['picture']['data']['url']
+                        });
+        final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Login Success.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
 
-        //  Token: ${accessToken.token}
-        //  User id: ${accessToken.userId}
-        //  Expires: ${accessToken.expires}
-        //  Permissions: ${accessToken.permissions}
-        //  Declined permissions: ${accessToken.declinedPermissions}
-        //  ''');
-
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return NavBarScreen();
-        }));
-
+                        await _thirdPartyRegister(body: body);
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
@@ -83,17 +82,48 @@ class _LoginScreenState extends State<LoginScreen> {
         break;
     }
   }
+// thirdparty register
+  Future<void> _thirdPartyRegister({var body}) async {
+    const Map<String, String> header = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+    var response =
+        await http.post(ServerApi.thirdPartyRegister, body: body, headers: header);
+    var responseData = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', responseData['api_token']);
+      localStorage.setString(
+          'user_data', json.encode(responseData['customer_info']));
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return NavBarScreen();
+      }));
+    } else{
+       final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Login Failed.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+
+    }
+  }
 
 // google login
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
+      'profile'
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
   Future<void> _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
+      print(_googleSignIn.currentUser);
     } catch (error) {
       print(error);
     }
@@ -109,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var response =
         await http.post(ServerApi.customerLogin, body: body, headers: header);
     var responseData = json.decode(response.body);
+    print(responseData);
     if (response.statusCode == 422) {
       final snackBar = SnackBar(
         duration: const Duration(milliseconds: 500),

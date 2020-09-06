@@ -42,27 +42,40 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: ListView(children: [
         SizedBox(height: 30,),
-        Align(
+       userData['profile_image'] == null ? Container(
           alignment: Alignment.center,
-                  child: Container(
             child: Stack(
               children: [
                 Positioned(
-                                  child: CircleAvatar(
-                    radius: 50,
-                    child: Text("no image"),
-                  ),
+                        child: CircleAvatar(
+          radius: 50,
+          child: Text("no image"),
+        ),
                 ),
                 Positioned(child: CircleAvatar(
-                  backgroundColor: Colors.brown,
-                  child: IconButton(icon: Icon(Icons.add_photo_alternate,color: Colors.white,), onPressed: (){}))),
+        backgroundColor: Colors.brown,
+        child: IconButton(icon: Icon(Icons.add_photo_alternate,color: Colors.white,), onPressed: (){}))),
               ],
             ),
-          ),
+          ) :
+          Container(
+          alignment: Alignment.center,
+            child: Stack(
+              children: [
+   Positioned(
+                        child: CircleAvatar(
+          radius: 50,
+          // child: Text("no image"),
+          backgroundImage: NetworkImage(userData['profile_image']),
+
         ),
+                ),
+              ],
+            ),
+          ), 
         SizedBox(height:5),
         Center(child: Text("${userData['first_name']} ${userData['last_name']}",style: TextStyle(fontSize:20,color:Colors.grey),)),
-        Center(child: Text("${userData['mobile_no']}",style: TextStyle(fontSize:15,color:Colors.grey),)),
+        Center(child: Text(userData['mobile_no'] != null ? "${userData['mobile_no']}" : userData['email'] ,style: TextStyle(fontSize:15,color:Colors.grey),)),
         SizedBox(height:10),
         Card(
           elevation: 1,

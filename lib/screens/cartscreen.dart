@@ -90,7 +90,12 @@ class CartScreen extends StatelessWidget {
               ),
             )
           ],
-        ) : Center(child:Text("Aren't you hungry ?\nadd some food to cart.",style: TextStyle(fontSize:14,color:Colors.grey[500]),))
+        ) : Stack(
+          children: [
+            Image.network("https://lh3.googleusercontent.com/proxy/uo8p09rKtvxXdzGRnbhGqtxBnU4JvKorCI8Xm2yEIBPiooihHBecwg5fGbsnr4dvQLObNK525ddWUd1UEVNA5oLws2r6jvfUAe-ms_vbJr_7uLKl"),
+            Center(child:Text("GOOD FOOD IS ALWAYS COOKING ?\n       Add something from menu.",style: TextStyle(fontSize:14,color:Colors.grey[500]),))
+          ],
+        )
       );
     });
   }

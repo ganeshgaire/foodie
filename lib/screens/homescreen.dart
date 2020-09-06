@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Daddy\'s Kitchen',
                 style: TextStyle(
                   color: mainColor,
-                  fontSize: 25.0,
+                  fontSize: 22.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1.2,
                 ),

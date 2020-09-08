@@ -13,15 +13,13 @@ class DealSingleScreen extends StatefulWidget {
 }
 
 class _DealSingleScreenState extends State<DealSingleScreen> {
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CartController>(
-      builder: (context,cart,child){
-return  Scaffold(
+    return Consumer<CartController>(builder: (context, cart, child) {
+      return Scaffold(
         key: _scaffoldKey,
-
         backgroundColor: Colors.white,
         appBar: AppBar(
           leading: InkWell(
@@ -32,10 +30,13 @@ return  Scaffold(
                 Icons.arrow_back_ios,
                 size: 18,
               )),
-              actions: [
-                Icon(MdiIcons.bagPersonalOutline,color:mainColor,),
-                SizedBox(width:5),
-              ],
+          actions: [
+            Icon(
+              MdiIcons.bagPersonalOutline,
+              color: mainColor,
+            ),
+            SizedBox(width: 5),
+          ],
           elevation: 1,
           backgroundColor: Colors.white,
         ),
@@ -148,21 +149,24 @@ return  Scaffold(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: mainColor),
-                  child: FlatButton(onPressed: () {
-          
-                                cart.addItem(
-                                widget.deal.id.toString(),
-                                widget.deal.name,
-                                widget.deal.price,
-                                widget.deal.image);
+                  child: FlatButton(
+                      onPressed: () {
+                        cart.addItem(
+                            widget.deal.id.toString(),
+                            widget.deal.name,
+                            widget.deal.price,
+                            widget.deal.image);
 
-                                final snackBar = SnackBar(
-                                  duration: const Duration(milliseconds: 1000),
-                                  backgroundColor: Colors.black87,
-                                  content: Text('Item added to cart.'));
-                              _scaffoldKey.currentState.showSnackBar(snackBar);
-                                     
-                  }, child: Text("Add to cart",style: TextStyle(fontSize:20,color:Colors.white),)),
+                        final snackBar = SnackBar(
+                            duration: const Duration(milliseconds: 1000),
+                            backgroundColor: Colors.black87,
+                            content: Text('Item added to cart.'));
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
+                      },
+                      child: Text(
+                        "Add to cart",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      )),
                 ),
               ),
               Spacer(),
@@ -170,7 +174,6 @@ return  Scaffold(
           ),
         ),
       );
-      }
-    );
+    });
   }
 }

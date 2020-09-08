@@ -76,37 +76,6 @@ final List<Deal> deals = [
       detail: "Nice one"),
 ];
 
-final List<Combo> combos = [
-  Combo(
-      id: 1,
-      name: "Teej Special",
-      items: [
-        "200 ML Coke",
-        "1 Chicken Pizza",
-        "1 Chicken Burger",
-        "1 plate Fry chicken momo"
-      ],
-      detail: "Teez special combo",
-      price: 500,
-      image:
-          "https://www.freepngimg.com/thumb/food/1-2-food-free-png-image-thumb.png",
-      validTill: "4 days remaining"),
-  Combo(
-      id: 2,
-      name: "Dashain Special",
-      items: [
-        "200 ML Coke",
-        "2 Chicken Pizza",
-        "2 Chicken Burger",
-        "2 plate Fry chicken momo"
-      ],
-      detail: "Dashain++ special combo",
-      price: 600,
-      image:
-          "https://www.freepngimg.com/thumb/food/1-2-food-free-png-image-thumb.png",
-      validTill: "7 days remaining"),
-];
-
 final List<Popular> populars = [
   Popular(
       id: 1,

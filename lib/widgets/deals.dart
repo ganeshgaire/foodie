@@ -44,7 +44,8 @@ class DealsWidget extends StatelessWidget {
                                     color: mainColor),
                                 child: Text(
                                   "${deals[index].discount.toString()} %",
-                                  style: TextStyle(fontSize: 13,color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
                                 ),
                               )),
                           Positioned(

@@ -20,14 +20,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
-    var userData;
+  var userData;
 
-    @override
-    void initState() {
-      _getUserInfo(); 
-      super.initState();    
-    }
-  void _getUserInfo()async {
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
+  void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user_data');
     var user = json.decode(userJson);
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       userData = user;
     });
   }
+
   @override
   void dispose() {
     _trackingScrollController.dispose();
@@ -46,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer<CartController>(builder: (context, cart, child) {
       return Scaffold(
         drawer: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6, child: customDrawer(context)),
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: customDrawer(context)),
         backgroundColor: Colors.white,
         body: CustomScrollView(
           controller: _trackingScrollController,
@@ -80,7 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     horizontal: 15.0, vertical: 10.0),
                 child: Container(
                   child: Text(
-                   userData['first_name'] != null ?  "Welcome ${userData['first_name']} ! \nWhat do you want to eat?" : "Welcome user ! \nWhat do you want to eat?",
+                    userData['first_name'] != null
+                        ? "Welcome ${userData['first_name']} ! \nWhat do you want to eat?"
+                        : "Welcome user ! \nWhat do you want to eat?",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 16.0,
@@ -102,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.search,
-                        color:mainColor,
+                        color: mainColor,
                       ),
                       hintStyle: TextStyle(color: Colors.grey[400]),
                       hintText: "category/food eg. Burger",
-                      suffixIcon: Icon(MdiIcons.sort, color:mainColor),
+                      suffixIcon: Icon(MdiIcons.sort, color: mainColor),
                       border: InputBorder.none,
                     ),
                   ),
@@ -138,28 +143,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              sliver: SliverToBoxAdapter(
-                child: Text(
-                  "Combo Offers",
-                  style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              sliver: SliverToBoxAdapter(
-                child: ComboWidget(combos: combos),
-              ),
-            ),
-            SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  "Burger Items",
+                  "Daddys Special",
                   style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18,
@@ -180,6 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget customDrawer(context){
+Widget customDrawer(context) {
   return Drawer();
 }

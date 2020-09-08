@@ -3,14 +3,16 @@ class Category {
   String name;
   String image;
   int items;
+  String slug;
 
-  Category({this.id, this.name,this.image,this.items});
+  Category({this.id, this.name, this.image, this.items, this.slug});
 
-   factory Category.fromJson(Map<String, dynamic> json) {
+  factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
         id: json['id'],
         name: json['name'],
         image: json['image'],
-        items: json['items']);
+        items: json['items'],
+        slug: json['slug']);
   }
 }

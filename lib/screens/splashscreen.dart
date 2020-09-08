@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(children: <Widget>[
-          SizedBox(height: 50),
+          SizedBox(height: 80),
           AnimatedContainer(
             duration: Duration(seconds: 1),
             height: MediaQuery.of(context).size.height * 0.5,
@@ -47,7 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
               children: List.generate(2, (index) => dots(index: index)),
             ),
           ),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: costumButton(context, "Get Started", LoginScreen(),
@@ -69,19 +71,17 @@ Widget splashTile(context, name, title, img) {
             child: Text(
               name,
               style: TextStyle(
-                  color: mainColor,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800),
+                  color: mainColor, fontSize: 25, fontWeight: FontWeight.w800),
             )),
-            SizedBox(height:10),
+        SizedBox(height: 10),
         Align(
             alignment: Alignment.topCenter,
             child: Container(
                 child: Text(
-                  title,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
-                ))),
-                SizedBox(height:30),
+              title,
+              style: TextStyle(color: Colors.grey[500], fontSize: 16),
+            ))),
+        SizedBox(height: 30),
         Align(
             alignment: Alignment.topCenter,
             child: Container(

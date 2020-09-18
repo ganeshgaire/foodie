@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/controller/cartcontroller.dart';
 import 'package:foodie/screens/homescreen.dart';
+import 'package:foodie/screens/loginscreen.dart';
 import 'package:foodie/widgets/customtab.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'menuscreen.dart';
 import 'cartscreen.dart';
 import 'accountscreen.dart';
@@ -27,23 +31,62 @@ class _NavBarScreenState extends State<NavBarScreen> {
     MdiIcons.account,
   ];
   int _selectedIndex = 0;
+  var userData;
+
+  Future<bool> _onBackPressed() {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Do you want to  logout?"),
+              actions: [
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    child: Text('No')),
+                FlatButton(
+                    onPressed: () async {
+                      SharedPreferences localStorage =
+                          await SharedPreferences.getInstance();
+                      await localStorage.clear();
+
+                      Navigator.pop(context, true);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return LoginScreen();
+                      }));
+                    },
+                    child: Text('Yes')),
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: _icons.length,
-        child: Scaffold(
-          body: IndexedStack(
-            index: _selectedIndex,
-            children: _pages,
-          ),
-          bottomNavigationBar: Card(
-            elevation: 0,
-            child: CustomTabBar(
-              icons: _icons,
-              selectedIndex: _selectedIndex,
-              onTap: (index) => setState(() => _selectedIndex = index),
-            ),
-          ),
-        ));
+    return Consumer<CartController>(builder: (context, cart, child) {
+      return WillPopScope(
+        onWillPop: () {
+          cart.clear();
+          _onBackPressed();
+          return null;
+        },
+        child: DefaultTabController(
+            length: _icons.length,
+            child: Scaffold(
+              body: IndexedStack(
+                index: _selectedIndex,
+                children: _pages,
+              ),
+              bottomNavigationBar: Card(
+                elevation: 0,
+                child: CustomTabBar(
+                  icons: _icons,
+                  selectedIndex: _selectedIndex,
+                  onTap: (index) => setState(() => _selectedIndex = index),
+                ),
+              ),
+            )),
+      );
+    });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/config/config.dart';
 import 'package:foodie/controller/cartcontroller.dart';
-import 'package:foodie/data/data.dart';
+import 'package:foodie/widgets/specials.dart';
 import 'package:foodie/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -47,14 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<CartController>(builder: (context, cart, child) {
       return Scaffold(
-        drawer: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
-            child: customDrawer(context)),
         backgroundColor: Colors.white,
         body: CustomScrollView(
           controller: _trackingScrollController,
           slivers: <Widget>[
             SliverAppBar(
+              leading: Icon(Icons.location_on, color: mainColor),
               brightness: Brightness.light,
               backgroundColor: Colors.white,
               title: Text(
@@ -66,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   letterSpacing: -1.2,
                 ),
               ),
-              centerTitle: false,
+              centerTitle: true,
               floating: true,
               actions: [
                 IconButton(
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               sliver: SliverToBoxAdapter(
-                child: DealsWidget(deals: deals),
+                child: PopularWidget(),
               ),
             ),
             SliverPadding(
@@ -157,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               sliver: SliverToBoxAdapter(
-                child: PopularWidget(populars: populars),
+                child: SpecialWidget(),
               ),
             ),
           ],
@@ -165,8 +163,4 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     });
   }
-}
-
-Widget customDrawer(context) {
-  return Drawer();
 }

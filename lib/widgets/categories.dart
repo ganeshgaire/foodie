@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/api/dataserver.dart';
-import 'package:foodie/api/serverapi.dart';
 import 'package:foodie/config/config.dart';
 import 'package:foodie/models/models.dart';
 import 'package:foodie/screens/categoryitemsscreen.dart';
 import 'package:shimmer/shimmer.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class CategoryWidget extends StatefulWidget {
   const CategoryWidget({Key key}) : super(key: key);
@@ -17,20 +13,6 @@ class CategoryWidget extends StatefulWidget {
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {
-  var foodsByCategory;
-  Future<void> getCategoryItems(categorySlug) async {
-    // const Map<String, String> header = {
-    //   'Content-type': 'application/json',
-    //   'Accept': 'application/json',
-    // };
-    http.Response response =
-        await http.get("${ServerApi.foodsByCategory}/$categorySlug");
-    var itemsByCategory = json.decode(response.body);
-    setState(() {
-      foodsByCategory = itemsByCategory['data'];
-      print(foodsByCategory);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +29,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 itemCount: categories.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
-                    onTap: () async {
-                      print("clicked");
-                      // fetch items by category
-
-                      await getCategoryItems(categories[index].slug);
-
+                    onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return CategoryItems(
-                          categoryItems: foodsByCategory,
+                          categorySlug: categories[index].slug,
                           categoryName: categories[index].name,
                         );
                       }));

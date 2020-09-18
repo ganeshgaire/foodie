@@ -5,6 +5,7 @@ import 'package:foodie/config/config.dart';
 import 'package:foodie/screens/navbarscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key key}) : super(key: key);

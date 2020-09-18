@@ -5,6 +5,7 @@ import 'package:foodie/api/serverapi.dart';
 import 'package:foodie/config/config.dart';
 import 'package:foodie/screens/loginscreen.dart';
 import 'package:foodie/screens/otpscreen.dart';
+import 'dart:async';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key key}) : super(key: key);
@@ -40,6 +41,7 @@ Future<void> _register({var body}) async{
   'Content-type': 'application/json',
   'Accept': 'application/json',
 };
+try{
   var response = await http.post(ServerApi.registerApi, body: body,headers: header);
     print(response.body);
     if(response.statusCode == 422){
@@ -63,6 +65,15 @@ Future<void> _register({var body}) async{
             return OtpScreen();
         }));
   }
+}catch(e){
+     final snackBar = SnackBar(
+            duration: const Duration(milliseconds: 1000),
+            backgroundColor: Colors.black87,
+            content: Text('Network connection not available'),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+
+}
 }
   @override
   Widget build(BuildContext context) {

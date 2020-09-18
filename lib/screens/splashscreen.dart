@@ -16,6 +16,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: costumButton(context, "Get Started", LoginScreen(),
+                double.infinity, Color(0xFFBF1C2E), Colors.white, 50.0),
+          ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(children: <Widget>[
@@ -40,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ],
             ),
           ),
+          SizedBox(height: 40,),
           Container(
             height: 20,
             child: Row(
@@ -47,15 +54,8 @@ class _SplashScreenState extends State<SplashScreen> {
               children: List.generate(2, (index) => dots(index: index)),
             ),
           ),
-          SizedBox(
-            height: 50,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: costumButton(context, "Get Started", LoginScreen(),
-                double.infinity, Color(0xFFBF1C2E), Colors.white, 50.0),
-          ),
-          SizedBox(height: 30),
+        
+          
         ]),
       ),
     );

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:foodie/api/serverapi.dart';
 import 'package:foodie/config/config.dart';
-import 'package:foodie/screens/navbarscreen.dart';
+import 'package:foodie/screens/maps.dart';
 import 'package:foodie/screens/signupscreen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'user_data', json.encode(responseData['customer_info']));
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return NavBarScreen();
+        return MapScreen();
       }));
     } else{
        final snackBar = SnackBar(
@@ -136,10 +137,10 @@ class _LoginScreenState extends State<LoginScreen> {
       'Content-type': 'application/json',
       'Accept': 'application/json',
     };
-    var response =
+    try{
+        var response =
         await http.post(ServerApi.customerLogin, body: body, headers: header);
-    var responseData = json.decode(response.body);
-    print(responseData);
+        var responseData = json.decode(response.body);
     if (response.statusCode == 422) {
       final snackBar = SnackBar(
         duration: const Duration(milliseconds: 500),
@@ -158,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (response.statusCode == 200) {
       final snackBar = SnackBar(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 1000),
         backgroundColor: Colors.black87,
         content: Text('Login Success.'),
       );
@@ -168,10 +169,18 @@ class _LoginScreenState extends State<LoginScreen> {
       localStorage.setString('token', responseData['api_token']);
       localStorage.setString(
           'user_data', json.encode(responseData['customer_info']));
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return NavBarScreen();
+  Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return MapScreen();
       }));
+    }
+    } catch(e){
+       final snackBar = SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black87,
+        content: Text('Network connection not available.'),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+
     }
   }
 

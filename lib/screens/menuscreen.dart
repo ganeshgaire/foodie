@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/api/dataserver.dart';
+import 'package:foodie/config/config.dart';
 import 'package:foodie/models/Category.dart';
+import 'package:foodie/screens/categoryitemsscreen.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -10,16 +12,14 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        title: Text("Daddy's Menu"),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 1,
-      ),
+  appBar: AppBar(
+          leading: Icon(Icons.restaurant_menu,color: mainColor,),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            "Daddys Menu",
+            style: TextStyle(color: Colors.grey[600]),
+          )),
       body: FutureBuilder(
         future: DataServer.fetchCategories(),
         builder:
@@ -30,13 +30,24 @@ class MenuScreen extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: categories.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Text(categories[index].items.toString()),
+                  return InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CategoryItems(
+                          categorySlug: categories[index].slug,
+                          categoryName: categories[index].name,
+                        );
+                      }));
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Text(categories[index].items.toString()),
+                        ),
+                        title: Text(categories[index].name),
+                        trailing: Icon(Icons.keyboard_arrow_right),
                       ),
-                      title: Text(categories[index].name),
-                      trailing: Icon(Icons.keyboard_arrow_right),
                     ),
                   );
                 });

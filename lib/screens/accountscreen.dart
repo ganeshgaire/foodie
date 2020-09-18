@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/config/config.dart';
+import 'package:foodie/screens/editprofile.dart';
+import 'package:foodie/screens/notifications.dart';
+import 'package:foodie/screens/ordersscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -31,15 +35,13 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        title: Text("My Account"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 1,
-      ),
+        elevation: 0,
+          leading: Icon(Icons.account_circle, color: mainColor),
+          backgroundColor: Colors.white,
+          title: Text(
+            "Me",
+            style: TextStyle(color: Colors.grey),
+          )),
       body: ListView(children: [
         SizedBox(
           height: 30,
@@ -75,7 +77,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: CircleAvatar(
                           radius: 50,
                           // child: Text("no image"),
-                          child: Image.network(userData['profile_image'])),
+                          backgroundImage: NetworkImage(userData['profile_image'])),
                     ),
                   ],
                 ),
@@ -94,44 +96,85 @@ class _AccountScreenState extends State<AccountScreen> {
           style: TextStyle(fontSize: 15, color: Colors.grey),
         )),
         SizedBox(height: 10),
-        Card(
-          elevation: 1,
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return OrdersScreen();
+            }));
+          },
           child: ListTile(
-            leading: Icon(Icons.shopping_cart),
+            leading: Icon(Icons.shopping_cart,size: 18,),
             title: Text(
               "My Orders",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey,fontSize: 14),
             ),
           ),
         ),
-        Card(
-          elevation: 1,
-          child: ListTile(
-            leading: Icon(Icons.track_changes),
-            title: Text(
-              "Track Order",
-              style: TextStyle(color: Colors.grey),
-            ),
+        ListTile(
+          leading: Icon(Icons.track_changes,size: 18,),
+          title: Text(
+            "Track Order",
+            style: TextStyle(color: Colors.grey,fontSize: 14),
           ),
         ),
-        Card(
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return NotificationScreen();
+            }));
+          },
           child: ListTile(
-            leading: Icon(Icons.notifications),
+            leading: Icon(Icons.notifications,size: 18,),
             title: Text(
               "Notifications",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey,fontSize: 14),
             ),
           ),
         ),
-        Card(
+        InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return EditProfileScreen();
+            }));
+          },
           child: ListTile(
-            leading: Icon(Icons.person_outline),
+            leading: Icon(Icons.person_outline,size: 18,),
             title: Text(
               "Edit Profile",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey,fontSize: 14),
             ),
           ),
         ),
+        ListTile(title:Text('Account Preferences',style: TextStyle(fontSize:12),)),
+         InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return EditProfileScreen();
+            }));
+          },
+          child: ListTile(
+            leading: Icon(Icons.person_outline,size: 18,),
+            title: Text(
+              "Privacy Policy",
+              style: TextStyle(color: Colors.grey,fontSize: 14),
+            ),
+          ),
+        ),
+         InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return EditProfileScreen();
+            }));
+          },
+          child: ListTile(
+            leading: Icon(Icons.person_outline,size: 18,),
+            title: Text(
+              "About Us",
+              style: TextStyle(color: Colors.grey,fontSize: 14),
+            ),
+          ),
+        ),
+        ListTile(title:Text('v1.0.0', style: TextStyle(color: Colors.grey,fontSize: 14)))
       ]),
     );
   }

@@ -16,10 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Daddys Kitchen",
       theme: ThemeData(
-        iconTheme: IconThemeData(
-    color: Colors.black, //change your color here
-  ),
-          primarySwatch: Colors.orange
+          primarySwatch: Colors.red,
+          appBarTheme: AppBarTheme(iconTheme: IconThemeData(color:Colors.black))
           ),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),

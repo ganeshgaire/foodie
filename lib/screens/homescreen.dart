@@ -56,10 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
               brightness: Brightness.light,
               backgroundColor: Colors.white,
               title: Text(
-                'Daddy\'s Kitchen',
+                'Daddys Kitchen',
                 style: TextStyle(
                   color: mainColor,
-                  fontSize: 22.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1.2,
                 ),
@@ -93,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverPadding(
+              
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
               sliver: SliverToBoxAdapter(
@@ -108,11 +109,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: mainColor,
                       ),
                       hintStyle: TextStyle(color: Colors.grey[400]),
-                      hintText: "category/food eg. Burger",
+                      hintText: "Want something to eat?",
                       suffixIcon: Icon(MdiIcons.sort, color: mainColor),
                       border: InputBorder.none,
                     ),
                   ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              sliver: SliverToBoxAdapter(
+                  
+                    child: Image.network("https://cdn.grabon.in/gograbon/images/merchant/1547301266015.png"),
+                ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              sliver: SliverToBoxAdapter(
+                child: Text(
+                  "Categories",
+                  style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),

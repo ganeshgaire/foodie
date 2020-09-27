@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:foodie/api/serverapi.dart';
 import 'package:foodie/config/config.dart';
-import 'package:foodie/screens/maps.dart';
+import 'package:foodie/screens/mapscreen.dart';
+import 'package:foodie/screens/navbarscreen.dart';
 import 'package:foodie/screens/signupscreen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'user_data', json.encode(responseData['customer_info']));
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MapScreen();
+        return MapPage();
       }));
     } else{
        final snackBar = SnackBar(
@@ -170,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
       localStorage.setString(
           'user_data', json.encode(responseData['customer_info']));
   Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MapScreen();
+        return NavBarScreen();
       }));
     }
     } catch(e){

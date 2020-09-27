@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'screens/splashscreen.dart';
 
 void main() {
+
   runApp(ChangeNotifierProvider(
       create: (context) => CartController(), child: MyApp()));
 }

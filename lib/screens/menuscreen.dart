@@ -43,10 +43,10 @@ class MenuScreen extends StatelessWidget {
                     child: Card(
                       child: ListTile(
                         leading: CircleAvatar(
-                          child: Text(categories[index].items.toString()),
+                          child: Text(categories[index].name[0]),
                         ),
                         title: Text(categories[index].name),
-                        trailing: Icon(Icons.keyboard_arrow_right),
+                        trailing: Text(categories[index].items.toString()),
                       ),
                     ),
                   );

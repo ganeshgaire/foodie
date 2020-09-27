@@ -13,11 +13,10 @@ class CategoryWidget extends StatefulWidget {
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 120,
       child: FutureBuilder(
         future: DataServer.fetchCategories(),
         builder:
@@ -38,17 +37,46 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                         );
                       }));
                     },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        child: Text(
-                          categories[index].name,
-                          style: TextStyle(fontSize: 14, color: mainColor),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+ Container(
+                            height: 80,
+                            width: 100,
+                            child: Card(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: categories[index].image != null
+                                  ? Image.network(
+                                      categories[index].image,
+                                      height: 80,
+                                      width: 100,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Icon(
+                                      Icons.fastfood,
+                                      color: mainColor,
+                                    ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 8,
+                            left: 10,
+                            child: Text("${categories[index].items.toString()} items",style: TextStyle(color:mainColor,fontSize:12),)),
+                          ],
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            categories[index].name,
+                            style: TextStyle( color: Colors.grey[600],
+                                fontSize: 12),
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 });
@@ -58,20 +86,20 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                   children: [
                     Expanded(
                       child: Container(
-                          height: 50.0,
-                          width: 200.0,
+                          height: 100.0,
+                          width: 100.0,
                           child: Card(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                     ),
                     Expanded(
                       child: Container(
-                          height: 50.0,
-                          width: 200.0,
+                          height: 100.0,
+                          width: 100.0,
                           child: Card(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                     ),
                   ],

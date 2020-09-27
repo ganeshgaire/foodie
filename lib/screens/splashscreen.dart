@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodie/screens/loginscreen.dart';
+import 'package:foodie/screens/mapscreen.dart';
 import 'package:foodie/widgets/button.dart';
 import 'package:foodie/config/config.dart';
 
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: costumButton(context, "Get Started", LoginScreen(),
+            child: costumButton(context, "Get Started", MapPage(),
                 double.infinity, Color(0xFFBF1C2E), Colors.white, 50.0),
           ),
       backgroundColor: Colors.white,
